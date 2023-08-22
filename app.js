@@ -2,6 +2,7 @@
 
 //import modules
 // import dotenv from 'dotenv'; // needed if secrets are in a .env file
+require('dotenv').config();
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const mic = require("mic");
@@ -10,12 +11,10 @@ const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 
 const { Configuration, OpenAIApi } = require("openai");
 
-// dotenv.config();
-
-// console.log(process.env.CREATE_REACT_API_KEY)
+console.log(process.env.CREATE_REACT_API_KEY)
 
 const configuration = new Configuration({
-    apiKey: "YOUR API KEY",
+    apiKey: process.env.CREATE_REACT_API_KEY,
   });
 const openai = new OpenAIApi(configuration);
 
