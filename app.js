@@ -9,14 +9,11 @@ const mic = require("mic");
 const { Readable } = require("stream");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 
-const { Configuration, OpenAIApi } = require("openai");
+const { OpenAI } = require("openai");
 
-console.log(process.env.CREATE_REACT_API_KEY)
-
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.CREATE_REACT_API_KEY,
-  });
-const openai = new OpenAIApi(configuration);
+});
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -53,11 +50,12 @@ function recordAudio(filename) {
 
 // Transcribe audio
 async function transcribeAudio(filename) {
-    const transcript = await openai.createTranscription(
-      fs.createReadStream(filename),
-      "whisper-1"
-    );
-    return transcript.data.text;
+    const response = await openai.audio.transcriptions.create({
+        model: 'whisper-1',
+        file: fs.createReadStream(filename),
+    });
+    console.log("Response: " + response)
+    return response.text;
 }
 
 async function main() {
