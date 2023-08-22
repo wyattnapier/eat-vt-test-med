@@ -57,11 +57,29 @@ async function transcribeAudio(filename) {
     return response.text;
 }
 
+// create a completion
+async function createCompletion (transcribedInput) {
+    const completion = await openai.completions.create({
+        model: "text-davinci-003",
+        prompt: transcribedInput,
+        max_tokens: 30,
+    });
+    console.log(completion.choices[0].text);
+    return completion.choices[0].text;
+}
+
 async function main() {
     const audioFilename = 'recorded_audio.wav';
     await recordAudio(audioFilename);
     const transcription = await transcribeAudio(audioFilename);
     console.log('Transcription:', transcription);
+    const completionResponse = await createCompletion(transcription);
+    // console.log('\n Completion output: ' + completionResponse)
+
+    // NEXT STEPS?
+    // send the transcription to chat gpt to try to interpret what it wants
+    // but what sort of prompt would this fall under?
+    // how do I incorporate this into my other file
 }
 
 main();
