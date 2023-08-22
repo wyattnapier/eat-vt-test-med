@@ -54,7 +54,6 @@ async function transcribeAudio(filename) {
         model: 'whisper-1',
         file: fs.createReadStream(filename),
     });
-    console.log("Response: " + response)
     return response.text;
 }
 
